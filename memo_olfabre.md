@@ -1,6 +1,6 @@
 ### Intégration Continue
 
-
+#### Exercice1
 
 Sur gitHub,   
 
@@ -117,3 +117,239 @@ Le fichier `salut.yml` est un workflow simple qui s'exécute après un `push` et
 On peut désactiver le worflow dans Actions, cliquez sur le nom du workflow et sélectionner `Disable workflow`
 
 ![1](1.jpg)
+
+
+
+---
+
+#### Exercice 2
+
+Nous devons sélectionner la branche `dev`
+Il contien un code `pom.xml`qui est la configuration principale d'un'projet Maven, avec des sections pour les dépendances, les propriétés, et les plugins pour la compilation, les tests, l'intégration de qualité de code et la couverture de tests
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ceri</groupId>
+    <artifactId>moduleListeSimple</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sonar.organization>ceri-m1-devops</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+	   <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>4.0.0.4121</version>
+  	   </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <release>21</release>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.12</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.0</version>
+<!--                <configuration>
+                    <argLine>${argLine}</argLine>
+                </configuration>-->
+            </plugin>
+        </plugins>
+    </build>
+</project>
+```
+
+#### Structure et Métadonnées de Projet
+
+```xml
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+```
+
+- **Déclaration des namespaces** : indique que le projet suit le modèle POM de Maven version 4.0.0.
+
+```xml
+    <groupId>ceri</groupId>
+    <artifactId>moduleListeSimple</artifactId>
+    <version>1.0-SNAPSHOT</version>
+```
+
+- **groupId** : identifie l'organisation ou l'auteur du projet, ici `"ceri"`.
+
+- **artifactId** : le nom unique de l’artifact, ici `"moduleListeSimple"`.
+
+- **version** : version du projet ; `"1.0-SNAPSHOT"` indique une version en cours de développement.
+
+
+
+#### Propriétés
+
+```xml
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sonar.organization>ceri-m1-devops</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    </properties>
+```
+
+
+
+- **Version Java** : `<maven.compiler.source>` et `<maven.compiler.target>` spécifient la version de Java à utiliser, ici Java 21.
+
+- **Encodage** : `<project.build.sourceEncoding>` indique que le projet utilise l’encodage UTF-8.
+
+- **Configuration Sonar** : les propriétés **`sonar.organization`** et **`sonar.host.url`** configurent l'organisation et l'URL de SonarCloud pour l'analyse de la qualité du code.
+
+
+
+#### Dépendances
+
+```xml
+<dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+```
+
+- **JUnit** : la dépendance `junit-jupiter` version 5.10.2 est ajoutée pour écrire et exécuter des tests unitaires. Le `scope` de cette dépendance est défini sur `"test"`, donc elle sera utilisée uniquement pendant la phase de test
+
+
+
+#### Configuration de Build et Plugins
+
+```xml
+<build>
+        <plugins>
+```
+
+- **Plugins Maven** : cette section configure les plugins Maven utilisés pour différentes tâches comme la compilation, les tests et l'analyse de couverture.
+
+
+
+##### Plugin Sonar
+
+```xml
+	   <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>4.0.0.4121</version>
+  	   </plugin>
+```
+
+
+
+- **`sonar-maven-plugin`** : configure le plugin Sonar pour l'intégration avec SonarCloud. Cela permet de générer des rapports de qualité de code à chaque build. 
+
+  
+
+##### Plugin de Compilation
+
+```xml
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <release>21</release>
+                </configuration>
+            </plugin>
+```
+
+- **`maven-compiler-plugin`** : ce plugin compile le code source Java. La version Java est spécifiée avec `<release>21</release>`, donc Java 21 sera utilisé.
+
+##### Plugin JaCoCo
+
+```xml
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.12</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+```
+
+
+
+- **`jacoco-maven-plugin`** : ce plugin est utilisé pour mesurer la couverture des tests.
+  - L'exécution `prepare-agent` initialise l’agent JaCoCo pendant la phase de test.
+  - L'exécution `report` génère un rapport de couverture pendant la phase `verify`.
+
+
+
+##### Plugin Surefire
+
+```xml
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.0</version>
+<!--                <configuration>
+                    <argLine>${argLine}</argLine>
+                </configuration>-->
+            </plugin>
+        </plugins>
+    </build>
+```
+
+- **`maven-surefire-plugin`** : ce plugin exécute les tests JUnit. La section de configuration commentée (balises `<!-- ... -->`) peut être utilisée pour ajouter des arguments spécifiques lors de l'exécution des tests.
+
+
+Le fichier `pom.xml` est bien structuré pour un projet Java avec les éléments essentiels pour la compilation, l'analyse de la qualité de code avec Sonar, la couverture de test avec JaCoCo, et les tests avec JUnit. Les versions et les configurations choisies sont récentes et adaptées à un projet Java moderne utilisant Maven.
