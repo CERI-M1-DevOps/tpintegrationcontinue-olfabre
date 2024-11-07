@@ -420,3 +420,37 @@ jobs:
 
 
 
+voici le code sans le commentaire
+
+```yaml
+name: Java CI with Maven - Test and package
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+
+      - name: Build and test with Maven
+        run: mvn -B package
+
+```
+
+
+
+lors d'un `new pull-request `l'action Java CI with Maven - Test and package  s'exécute
+
