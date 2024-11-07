@@ -117,9 +117,21 @@ class ListeSimpleTest {
 
     @Test
     void supprimeTousListeVide() {
-        listeATester.supprimePremier(1);
-        assertNull(listeATester.tete);
-        assertEquals(0, listeATester.getSize());
+        // Ajouter plusieurs éléments à la liste
+        listeATester.ajout(1);
+        listeATester.ajout(2);
+        listeATester.ajout(3);
+
+        // Supprimer tous les éléments un par un
+        listeATester.supprimePremier(1); // Suppression du premier élément
+        assertEquals(2, listeATester.getSize()); // Vérification de la taille après suppression
+
+        listeATester.supprimePremier(2); // Suppression du deuxième élément
+        assertEquals(1, listeATester.getSize()); // Vérification de la taille après suppression
+
+        listeATester.supprimePremier(3); // Suppression du troisième élément
+        assertNull(listeATester.tete); // Vérification que la tête est maintenant nulle
+        assertEquals(0, listeATester.getSize()); // Vérification que la liste est vide
     }
 
     @Test
