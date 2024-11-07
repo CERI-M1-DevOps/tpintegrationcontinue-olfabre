@@ -365,5 +365,21 @@ On créer un dossier `workflows`
 
 on va créer le fichier `buildJava.yml` pour configurer le workflow GitHub Actions en fonction des instructions données:
 
+- Le nom du workflow sera "Java CI with Maven - Test and package"
+- déclencher lorsqu’on émet une pull request sur la branche main.
+- Il ne contient qu’un seul job
+- s’exécute sur la dernière version d’ubuntu. 
+
+
+
+Il y aura 3 étapes:
+
+- utilisez l’action actions/checkout@v4 pour se placer dans le dépôt courant (vous pouvez consulter https://github.com/actions/checkout) 
+
+- utilisez ensuite l’action actions/setup-java@v4 (vous pouvez consulter https://github.com/actions/setup-java). Choisissez la version 21 et la distribution corretto 
+- enfin faire construire votre package avec maven : pour cela un fichier pom.xml vous est fourni, qui définit les dépendances impliquées dans ce projet. La commande pour construire est mvn –B package, elle lancera les tests avec JUnit.
+
+
+
 
 
