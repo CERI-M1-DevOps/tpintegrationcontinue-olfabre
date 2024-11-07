@@ -351,6 +351,7 @@ Il contien un code `pom.xml`qui est la configuration principale d'un'projet Mave
 
 - **`maven-surefire-plugin`** : ce plugin exécute les tests JUnit. La section de configuration commentée (balises `<!-- ... -->`) peut être utilisée pour ajouter des arguments spécifiques lors de l'exécution des tests.
 
+
 Le fichier `pom.xml` est bien structuré pour un projet Java avec les éléments essentiels pour la compilation, l'analyse de la qualité de code avec Sonar, la couverture de test avec JaCoCo, et les tests avec JUnit. Les versions et les configurations choisies sont récentes et adaptées à un projet Java moderne utilisant Maven.
 
 
@@ -420,6 +421,7 @@ jobs:
 
 
 
+
 voici le code sans le commentaire
 
 ```yaml
@@ -453,4 +455,9 @@ jobs:
 
 
 lors d'un `new pull-request `l'action Java CI with Maven - Test and package  s'exécute
+
+
+
+
+Le fichier `pom.xml` est bien structuré pour un projet Java avec les éléments essentiels pour la compilation, l'analyse de la qualité de code avec Sonar, la couverture de test avec JaCoCo, et les tests avec JUnit. Les versions et les configurations choisies sont récentes et adaptées à un projet Java moderne utilisant Maven.
 
