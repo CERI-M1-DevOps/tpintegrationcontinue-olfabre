@@ -381,5 +381,42 @@ Il y aura 3 étapes:
 
 
 
+==buildJava.yml==
+
+```yaml
+name: Java CI with Maven - Test and package
+
+# Déclenchement du workflow: ce workflow s’exécute à chaque pull request vers la branche main.
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    # Job "build": ce job s’exécute sur la dernière version d'Ubuntu (ubuntu-latest).
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    # Etapes
+    steps:
+
+      # Checkout code: utilise l’action actions/checkout@v4 pour cloner le dépôt actuel et accéder aux fichiers.
+      - name: Checkout code V4
+        uses: actions/checkout@v4
+
+      # Setup Java: utilise l’action actions/setup-java@v4 pour configurer l’environnement Java. Nous spécifions la version 21 avec la distribution corretto.
+      - name: Set up Java V4
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+
+
+      # Build and test with Maven: exécute la commande mvn -B package pour compiler le projet, exécuter les tests JUnit et construire le package en fonction des configurations du fichier pom.xml
+      - name: Build and test with Maven
+        run: mvn -B package
+```
+
 
 
