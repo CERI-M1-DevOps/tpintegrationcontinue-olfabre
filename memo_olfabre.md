@@ -479,3 +479,4 @@ Pour intégrer SonarCloud dans votre workflow GitHub Actions et exécuter l’an
 
 
 
+modification du fichier 
