@@ -461,3 +461,4 @@ lors d'un `new pull-request `l'action Java CI with Maven - Test and package  s'e
 
 Le fichier `pom.xml` est bien structuré pour un projet Java avec les éléments essentiels pour la compilation, l'analyse de la qualité de code avec Sonar, la couverture de test avec JaCoCo, et les tests avec JUnit. Les versions et les configurations choisies sont récentes et adaptées à un projet Java moderne utilisant Maven.
 
+ok
