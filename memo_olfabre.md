@@ -458,3 +458,24 @@ lors d'un `new pull-request `l'action Java CI with Maven - Test and package  s'e
 
 ![2](2.jpg)
 
+
+
+#### Exercice 3 – Qualité du code
+
+Nous allons observer la qualité de noter code en utilisant la plateforme https://sonarcloud.io (inscription avec mon gitHub)
+
+et le rapport est sur https://sonarcloud.io/project/configuration?id=CERI-M1-DevOps_tpintegrationcontinue-olfabre
+
+
+
+Pour pouvoir lancer l’analyse de la qualité, il faut changer la commande maven pour:
+
+```yaml
+mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+-Dsonar.projectKey=$(echo ${{ github.repository }} | sed 's-/-_-')
+```
+
+Pour intégrer SonarCloud dans votre workflow GitHub Actions et exécuter l’analyse de la qualité de votre code, vous devrez modifier la commande Maven et configurer le jeton d'authentification (`SONAR_TOKEN`). Voici comment procéder pour que la configuration respecte les nouvelles spécifications.
+
+
+
