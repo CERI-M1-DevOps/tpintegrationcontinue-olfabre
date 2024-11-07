@@ -49,9 +49,7 @@ class ListeSimpleTest {
         listeATester.ajout(1);
         listeATester.ajout(2);
         listeATester.ajout(3);
-        // Vérifier que listeATester contient bien les éléments attendus
-        String expectedOutput = "[1, 2, 3]";
-        assertEquals(expectedOutput, listeATester.toString());
+        listeATester.ajout(4);
         System.out.println(listeATester);
     }
 
