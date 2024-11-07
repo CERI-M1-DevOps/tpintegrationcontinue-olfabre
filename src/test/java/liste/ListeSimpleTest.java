@@ -141,7 +141,7 @@ class ListeSimpleTest {
         listeATester.ajout(2);
         listeATester.ajout(3);
         listeATester.supprimeTous(3);
-        assertEquals(listeATester.toString(), "ListeSimple(Noeud(2), Noeud(1))");
+        assertEquals("ListeSimple(Noeud(2), Noeud(1))",listeATester.toString());
         assertEquals(2, listeATester.getSize());
     }
 
@@ -151,7 +151,7 @@ class ListeSimpleTest {
         listeATester.ajout(3);
         listeATester.ajout(2);
         listeATester.supprimeTous(3);
-        assertEquals(listeATester.toString(), "ListeSimple(Noeud(2), Noeud(1))");
+        assertEquals("ListeSimple(Noeud(2), Noeud(1))",listeATester.toString() );
         assertEquals(2, listeATester.getSize());
     }
 
@@ -161,7 +161,7 @@ class ListeSimpleTest {
         listeATester.ajout(1);
         listeATester.ajout(1);
         listeATester.supprimeTous(1);
-        assertEquals(listeATester.toString(), "ListeSimple(Noeud(2))");
+        assertEquals("ListeSimple(Noeud(2))", listeATester.toString() );
         assertEquals(1, listeATester.getSize());
     }
 
@@ -172,7 +172,7 @@ class ListeSimpleTest {
         listeATester.ajout(3);
         listeATester.ajout(2);
         listeATester.supprimeTous(3);
-        assertEquals(listeATester.toString(), "ListeSimple(Noeud(2), Noeud(1))");
+        assertEquals("ListeSimple(Noeud(2), Noeud(1))", listeATester.toString() );
         assertEquals(2, listeATester.getSize());
     }
 
