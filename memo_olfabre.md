@@ -525,5 +525,344 @@ on modifie les fichiers et les codes de façon à obtenir 100%
 
 Question 4:
 
+Voici le fichier modifié
+
+```yaml
+name: Java CI with Maven - Test and package
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+
+      # Cache Maven dependencies
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/*.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build, test, and analyze with Maven and SonarCloud
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=$(echo ${{ github.repository }} | sed 's-/-_-')
+
+```
+
+
+
+### Explication des modifications :
+
+1. **Étape "Cache Maven dependencies"** :
+   - Cette étape utilise l'action `actions/cache@v4` pour mettre en cache le répertoire des dépendances Maven (`~/.m2/repository`), ce qui permet d'éviter de télécharger à chaque build les mêmes dépendances.
+   - La clé de cache est basée sur un hachage des fichiers `.xml` (comme `pom.xml`), ce qui permet de créer un nouveau cache chaque fois que ces fichiers changent.
+   - Le paramètre `restore-keys` permet d'utiliser un cache existant s'il existe, même si la clé exacte ne correspond pas.
+2. **Autres étapes inchangées** :
+   - Vous continuez à configurer Java avec `actions/setup-java@v4` et à exécuter votre build Maven avec SonarCloud comme avant.
+
+Avec cette configuration, à chaque nouveau build, les dépendances Maven seront récupérées depuis le cache si elles sont déjà présentes, ce qui accélérera le processus de build en évitant les téléchargements redondants.
+
+
+
+Question 5 
+
+Dans un premier temps, je documente quelques fonctions du fichier ListeSimple.java
+
+```java
+package liste;
+
+public class ListeSimple {
+    private long size;
+    Noeud tete;
+
+    /**
+     * Retourne la taille de la liste.
+     * @return Le nombre de nœuds dans la liste.
+     */
+    public long getSize() {
+        return size;
+    }
+
+    /**
+     * Ajoute un nouvel élément en tête de la liste.
+     * @param element L'élément à ajouter en tête de la liste.
+     */
+    public void ajout(int element) {
+        tete = new Noeud(element, tete);
+        size++;
+    }
+
+    /**
+     * Modifie la première occurrence d'un élément avec une nouvelle valeur.
+     * @param element L'élément à rechercher dans la liste.
+     * @param nouvelleValeur La nouvelle valeur pour remplacer l'élément trouvé.
+     */
+    public void modifiePremier(Object element, Object nouvelleValeur) {
+        Noeud courant = tete;
+        while (courant != null && courant.getElement() != element)
+            courant = courant.getSuivant();
+        if (courant != null)
+            courant.setElement(nouvelleValeur);
+    }
+
+    /**
+     * Modifie toutes les occurrences d'un élément avec une nouvelle valeur.
+     * @param element L'élément à rechercher dans la liste.
+     * @param nouvelleValeur La nouvelle valeur pour remplacer chaque occurrence de l'élément trouvé.
+     */
+    public void modifieTous(Object element, Object nouvelleValeur) {
+        Noeud courant = tete;
+        while (courant != null) {
+            if (courant.getElement() == element)
+                courant.setElement(nouvelleValeur);
+            courant = courant.getSuivant();
+        }
+    }
+
+    /**
+     * Retourne une représentation en chaîne de la liste.
+     * @return Une chaîne représentant la liste.
+     */
+    public String toString() {
+        StringBuilder sb = new StringBuilder("ListeSimple(");
+        Noeud n = tete;
+        while (n != null) {
+            sb.append(n);
+            n = n.getSuivant();
+            if (n != null)
+                sb.append(", ");
+        }
+        sb.append(")");
+        return sb.toString();
+    }
+
+    /**
+     * Supprime la première occurrence d'un élément dans la liste.
+     * @param element L'élément à supprimer de la liste.
+     */
+    public void supprimePremier(Object element) {
+        if (tete != null) {
+            if (tete.getElement() == element) {
+                tete = tete.getSuivant();
+                size--;
+                return;
+            }
+            Noeud precedent = tete;
+            Noeud courant = tete.getSuivant();
+            while (courant != null && courant.getElement() != element) {
+                precedent = precedent.getSuivant();
+                courant = courant.getSuivant();
+            }
+            if (courant != null) {
+                precedent.setSuivant(courant.getSuivant());
+                size--;
+            }
+        }
+    }
+
+    /**
+     * Supprime toutes les occurrences d'un élément dans la liste.
+     * @param element L'élément à supprimer de la liste.
+     */
+    public void supprimeTous(int element) {
+        tete = supprimeTousRecurs(element, tete);
+    }
+
+    /**
+     * Supprime récursivement toutes les occurrences d'un élément dans la sous-liste à partir d'un nœud donné.
+     * @param element L'élément à supprimer de la sous-liste.
+     * @param tete La tête de la sous-liste.
+     * @return La nouvelle tête de la sous-liste après suppression des occurrences.
+     */
+    public Noeud supprimeTousRecurs(Object element, Noeud tete) {
+        if (tete != null) {
+            Noeud suiteListe = supprimeTousRecurs(element, tete.getSuivant());
+            if (tete.getElement() == element) {
+                size--;
+                return suiteListe;
+            } else {
+                tete.setSuivant(suiteListe);
+                return tete;
+            }
+        } else return null;
+    }
+
+    /**
+     * Retourne l'avant-dernier nœud de la liste.
+     * @return Le nœud avant le dernier dans la liste, ou null si la liste est trop courte.
+     */
+    public Noeud getAvantDernier() {
+        if (tete == null || tete.getSuivant() == null)
+            return null;
+        else {
+            Noeud courant = tete;
+            Noeud suivant = courant.getSuivant();
+            while (suivant.getSuivant() != null) {
+                courant = suivant;
+                suivant = suivant.getSuivant();
+            }
+            return courant;
+        }
+    }
+
+    /**
+     * Inverse l'ordre des nœuds dans la liste.
+     */
+    public void inverser() {
+        Noeud precedent = null;
+        Noeud courant = tete;
+        while (courant != null) {
+            Noeud next = courant.getSuivant();
+            courant.setSuivant(precedent);
+            precedent = courant;
+            courant = next;
+        }
+        tete = precedent;
+    }
+
+    /**
+     * Retourne le nœud précédent d'un nœud donné.
+     * @param r Le nœud dont on souhaite obtenir le précédent.
+     * @return Le nœud précédent, ou null si le nœud est la tête de la liste.
+     */
+    public Noeud getPrecedent(Noeud r) {
+        Noeud precedent = tete;
+        Noeud courant = precedent.getSuivant();
+        while (courant != r) {
+            precedent = courant;
+            courant = courant.getSuivant();
+        }
+        return precedent;
+    }
+
+    /**
+     * Échange deux nœuds donnés dans la liste.
+     * @param r1 Le premier nœud à échanger.
+     * @param r2 Le second nœud à échanger.
+     */
+    public void echanger(Noeud r1, Noeud r2) {
+        if (r1 == r2)
+            return;
+        Noeud precedentR1;
+        Noeud precedentR2;
+        if (r1 != tete && r2 != tete) {
+            precedentR1 = getPrecedent(r1);
+            precedentR2 = getPrecedent(r2);
+            precedentR1.setSuivant(r2);
+            precedentR2.setSuivant(r1);
+        } else if (r1 == tete) {
+            precedentR2 = getPrecedent(r2);
+            precedentR2.setSuivant(tete);
+            tete = r2;
+        }
+        else  {
+            precedentR1 = getPrecedent(r1);
+            precedentR1.setSuivant(tete);
+            tete = r1;
+        }
+        Noeud temp = r2.getSuivant();
+        r2.setSuivant(r1.getSuivant());
+        r1.setSuivant(temp);
+    }
+}
+
+```
+
+Ensuite, je désactive `buildJava.yml` sur gitHub.
+
+On créé documentation.yml
+
+```yaml
+name: Documentation
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  generate-docs:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Generate Javadoc
+        run: mvn -B javadoc:javadoc
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./target/site/apidocs
+
+```
+
+
+
+on va le faire sur un commit et non un close request-merge pour la praticité du tp
+
+```yaml
+name: Generate and Deploy Documentation
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  generate-doc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Generate Javadoc
+        run: mvn -B javadoc:javadoc
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./target/site/apidocs
+
+```
+
+
+
+
+
 
 
