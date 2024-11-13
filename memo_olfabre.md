@@ -871,7 +871,18 @@ jobs:
 
 
 
+la doc est générée dans la branche `gh-pages`
+
+pour obtenir une page à l'adresse https://ceri-m1-devops.github.io/tpintegrationcontinue-olfabre/
 
 
 
+on va sur la branche gh-pages, ensuite on va dans settings / pages / 
+
+Dans Buid and déployment / source / Deploy from a branch
+
+Dans Branch, je choisie gh-pages et root et SAVE
+
+
+Fin du TP
 
