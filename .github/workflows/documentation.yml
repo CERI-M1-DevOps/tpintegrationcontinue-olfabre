@@ -1,0 +1,29 @@
+name: Generere documentation
+permissions:
+  contents: write
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  generate-doc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: On check le code
+        uses: actions/checkout@v2
+
+      - name: Initialisation de JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Générer Javadoc
+        run: mvn -B javadoc:javadoc
+
+      - name: Deploiement sur GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./target/reports/apidocs
