@@ -20,6 +20,14 @@ jobs:
           java-version: '21'
           distribution: 'corretto'
 
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/*.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+            
       - name: Build, test, and analyze with Maven and SonarCloud
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
