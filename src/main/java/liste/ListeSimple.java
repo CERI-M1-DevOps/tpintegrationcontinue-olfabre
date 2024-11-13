@@ -13,7 +13,7 @@ public class ListeSimple {
     }
 
     /**
-     * Ajoute un nouvel élément en tête de la liste.
+     * Ajoute un nouvel élément en tête de la liste
      * @param element L'élément à ajouter en tête de la liste.
      */
     public void ajout(int element) {
