@@ -28,6 +28,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
             
+      - name: Cache SonarQube packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+            
       - name: Build, test, and analyze with Maven and SonarCloud
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

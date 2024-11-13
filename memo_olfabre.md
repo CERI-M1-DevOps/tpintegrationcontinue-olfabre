@@ -550,7 +550,6 @@ jobs:
           java-version: '21'
           distribution: 'corretto'
 
-      # Cache Maven dependencies
       - name: Cache Maven dependencies
         uses: actions/cache@v4
         with:
@@ -558,11 +557,20 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/*.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+            
+      - name: Cache SonarQube packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
 
+            
       - name: Build, test, and analyze with Maven and SonarCloud
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=$(echo ${{ github.repository }} | sed 's-/-_-')
+
 
 ```
 
@@ -830,7 +838,8 @@ on va le faire sur un commit et non un close request-merge pour la praticité du
 
 ```yaml
 name: Generate and Deploy Documentation
-
+permissions:
+  contents: write
 on:
   push:
     branches:
@@ -847,7 +856,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'temurin'
-          java-version: '11'
+          java-version: '21'
 
       - name: Generate Javadoc
         run: mvn -B javadoc:javadoc
